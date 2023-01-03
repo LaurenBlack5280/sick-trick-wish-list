@@ -1,40 +1,44 @@
 import { Component } from 'react';
 import './App.css';
 import CardContainer from '../CardContainer';
-
+// import { getTricksData } from '../../apiCalls';
+import Form from '../Form';
 class App extends Component {
   constructor() {
     super()
     this.state = {
-      tricks: [
-        {
-          stance: "regular",
-          name: "treflip",
-          obstacle: "flat ground",
-          tutorial: "https://www.youtube.com/watch?v=XGw3YkQmNig",
-          id: 1
-          },
-          {
-          stance: "switch",
-          name: "heelflip",
-          obstacle: "stairs",
-          tutorial: "https://www.youtube.com/watch?v=9N9swrZU1HA",
-          id: 2
-          },
-          {
-          stance: "regular",
-          name: "frontside 50-50, backside 180 out",
-          obstacle: "ledge",
-          tutorial: "https://www.youtube.com/watch?v=9N9swrZU1HA",
-          id: 3
-        }
-      ]
+      tricks: []
     }
   }
+
+  componentDidMount = () => {
+     fetch('http://localhost:3001/api/v1/tricks')
+      .then(res => {
+          console.log(res)
+      //     if(!res.ok) {
+      //         throw new Error(res.statusText)
+      //     }
+          return res.json()
+      })
+      .then(data => {
+        this.setState({ tricks: data})
+      })
+      // .catch(err => {
+      //     console.log(`${err.message}`)
+      // })
+  }
+
+  addTrick = newTrick => {
+    this.setState({
+      tricks: [...this.state.tricks, newTrick]
+    })
+  }
+
   render() {
     return (
       <div className="App">
         <h1>Sick Trick Wish List</h1>
+        <Form addTrick={this.addTrick}/>
         <CardContainer tricks={ this.state.tricks }/>
       </div>
     );
