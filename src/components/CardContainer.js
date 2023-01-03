@@ -15,7 +15,7 @@ const CardContainer = ({ tricks }) => {
         )
     })
     return (
-        <section>
+        <section className="card-container">
             {trickCards}
         </section>
     )
